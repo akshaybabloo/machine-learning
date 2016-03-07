@@ -8,12 +8,23 @@ class TCE:
         self.current_folder = os.path.dirname(os.path.realpath(__file__)) + "/data/"
 
     def feature_names(self):
+        """
+        Reads feature names if present
+        :return:
+        """
+        # data =''
+        # if os.path.isfile(self.current_folder + 'feature_names_eeg.txt'):
+        #     with open(self.current_folder + 'feature_names_eeg.txt', 'r') as f:
+        #         data = f.read()
+        #     f.close()
+        try:
+            with open(self.current_folder + 'feature_names_eeg.txt', 'r') as f:
+                data = f.read()
+            f.close()
+            return data.split('\n')
+        except IOError as e:
+            print("file not found")
 
-        with open(self.current_folder + 'feature_names_eeg.txt', 'r') as f:
-            data = f.read()
-        f.close()
-
-        return data.split('\n')
 
     def read_csv(self):
         """
