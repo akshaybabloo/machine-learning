@@ -5,28 +5,35 @@ import re
 
 class TCE:
     def __init__(self):
-        pass
+        self.current_folder = os.path.dirname(os.path.realpath(__file__)) + "/data/"
 
-    @staticmethod
-    def read_csv():
+    def feature_names(self):
+
+        with open(self.current_folder + 'feature_names_eeg.txt', 'r') as f:
+            data = f.read()
+        f.close()
+
+        return data.split('\n')
+
+    def read_csv(self):
         """
         Search for samples, and format it into one array
         :return: data
         """
-        current_folder = os.path.dirname(os.path.realpath(__file__)) + "/data/"
 
         # assigns only file prefixed with "sam"
-        prefixed = [filename for filename in os.listdir(current_folder) if filename.startswith("sam")]
+        prefixed = [filename for filename in os.listdir(self.current_folder) if filename.startswith("sam")]
 
         prefixed.sort(key=natural_keys)  # Sorted with filename and sample number
 
         data = []  # place holder
 
         for files in prefixed:
-            with open(current_folder + files, 'r') as csv_file:
+            with open(self.current_folder + files, 'r') as csv_file:
                 reader = csv.reader(csv_file, delimiter=' ', quotechar='|')
                 for row in reader:
                     data.append(row[0].split(','))
+            csv_file.close()
         return data
 
         # @staticmethod
@@ -53,8 +60,10 @@ def natural_keys(text):
 
 def main():
     some_object = TCE()
-    test = some_object.read_csv()
-    print(list(map(list, zip(*test[0:128]))))  # row to column
+    # test = some_object.read_csv()
+    # print(list(map(list, zip(*test[0:128]))))  # row to column
+
+    print(some_object.feature_names())
 
 
 if __name__ == '__main__':
