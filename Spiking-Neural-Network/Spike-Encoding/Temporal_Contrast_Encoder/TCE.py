@@ -3,7 +3,6 @@ import os
 import re
 import numpy as np
 from Temporal_Contrast_Encoder.JsonParser import JSON
-from distutils.util import strtobool
 
 
 class TCE:
@@ -53,37 +52,29 @@ class TCE:
                 reader = csv.reader(csv_file, delimiter=' ', quotechar='|')
                 for row in reader:
                     data.append(row[0].split(','))
-                    # data.append(row[0])
             csv_file.close()
 
-        # return np.matrix([list(map(float, da)) for da in data])
         return [list(map(float, da)) for da in data]
-        # return data
 
-    # @staticmethod
     def encoder(self):
         np.set_printoptions(threshold=np.nan)
         variable_threshold = self.threshold()
         data = self.read_csv()
-        print(len(data))
-
         timelengeth = 128
         spike_state_length = timelengeth * self.sample_number
 
+        b = []
+
         if self.sample_number > 0:
             threshold = np.tile(np.transpose(variable_threshold), [7680, 1])
-            print(len(threshold))
 
-            b = []
             for i in range(0, len(data)):
                 b.append(np.subtract(data[i], data[i - 1]).tolist())
 
-            spike = np.concatenate(((b > threshold).astype(int) - (b < -threshold).astype(int), (b < -threshold).astype(int)), axis=1)
+            spike = np.concatenate(
+                ((b > threshold).astype(int) - (b < -threshold).astype(int), (b < -threshold).astype(int)), axis=1)
 
-            print(spike)
-            # spike_state = []
-            # for g in range(len(data)):
-            #     spike_state =
+            return spike
 
     def threshold(self):
         x = np.array(self.read_csv())
