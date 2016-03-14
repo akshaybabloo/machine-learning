@@ -1,4 +1,5 @@
 import json
+import sys
 
 
 class JSONParser:
@@ -10,7 +11,10 @@ class JSONParser:
         Returns JSON attributes.
         :return:
         """
-        with open(self.current_folder + 'conf.json') as f:
-            data = json.load(f)
-
-        return data
+        try:
+            with open(self.current_folder + 'conf.json') as f:
+                data = json.load(f)
+            return data
+        except IOError as e:
+            print('File not found - ', e)
+            sys.exit(1)
