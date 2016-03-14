@@ -36,8 +36,22 @@ class ReadCSV:
         return [list(map(float, da)) for da in data]
 
     def sample_size(self):
-
         return len(self.prefixed)
+
+    def time_feature_length(self):
+        """
+        Returns the time length of a file by counting it's number of columns
+        :return:
+        """
+        file = self.prefixed[0]
+        a = []
+        with open(self.current_folder + file) as csv_file:
+            reader = csv.reader(csv_file, delimiter=' ', quotechar='|')
+            for col in reader:
+                a.append(col)
+        csv_file.close()
+
+        return {'time_length': len(a), 'feature_length': len(a[0][0].split(','))}
 
     def feature_names(self):
         """
