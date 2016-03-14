@@ -19,7 +19,7 @@ class ReadCSV:
 
     def read_csv(self):
         """
-        Search for samples, and format it into one array
+        Search for samples, and format it into one array.
         :return: data
         """
 
@@ -36,11 +36,15 @@ class ReadCSV:
         return [list(map(float, da)) for da in data]
 
     def sample_size(self):
+        """
+        Returns the length of the sample size.
+        :return:
+        """
         return len(self.prefixed)
 
     def time_feature_length(self):
         """
-        Returns the time length of a file by counting it's number of columns
+        Returns the time length of a file by counting it's number of columns.
         :return:
         """
         file = self.prefixed[0]
@@ -79,7 +83,7 @@ class ReadCSV:
 
 def atoi(text):
     """
-    Checks if the file names contain numbers
+    Checks if the file names contain numbers.
     :param text:
     :return:
     """
@@ -88,7 +92,7 @@ def atoi(text):
 
 def natural_keys(text):
     """
-    Splits the number from the file name
+    Splits the number from the file name.
     :param text:
     :return:
     """

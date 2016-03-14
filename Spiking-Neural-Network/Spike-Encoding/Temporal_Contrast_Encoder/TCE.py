@@ -17,7 +17,10 @@ class TCE:
         self.thresh = thresh.get_json()['parameter']['threshold']
 
     def encoder(self):
-
+        """
+        Encodes the given data into spikes depending upon the given spike rate
+        :return:
+        """
         variable_threshold = self.threshold()
         # timelengeth = 128
         # spike_state_length = timelengeth * self.sample_number
@@ -36,7 +39,10 @@ class TCE:
             return spike
 
     def threshold(self):
-
+        """
+        Returns the threshold values for each input value.
+        :return:
+        """
         x = np.array(self.data)
         data = np.diff(list(map(list, zip(*x))))
 

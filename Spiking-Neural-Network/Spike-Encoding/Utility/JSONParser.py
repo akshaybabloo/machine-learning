@@ -6,7 +6,10 @@ class JSONParser:
         self.current_folder = location
 
     def get_json(self):
-
+        """
+        Returns JSON attributes.
+        :return:
+        """
         with open(self.current_folder + 'conf.json') as f:
             data = json.load(f)
 
