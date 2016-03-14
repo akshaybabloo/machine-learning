@@ -1,33 +1,31 @@
-import os
 import numpy as np
 from Utility.JSONParser import JSONParser
 from Utility.ReadCSV import ReadCSV
 
 
 class TCE:
-    def __init__(self, location=None):
+    def __init__(self, location=None, config=None):
         self.location = location
 
-        # assigns only file prefixed with "sam"
-        self.prefixed = [filename for filename in os.listdir(self.location) if filename.startswith("sam")]
-        self.sample_number = len(self.prefixed)
-
         read_csv = ReadCSV(self.location)
+        self.sample_number = read_csv.sample_size()
         self.data = read_csv.read_csv()
+        self.time_length = read_csv.time_feature_length()['time_length']
+        self.feature_length = read_csv.time_feature_length()['feature_length']
 
-        thresh = JSONParser(location)
+        thresh = JSONParser(config)
         self.thresh = thresh.get_json()['parameter']['threshold']
 
     def encoder(self):
 
         variable_threshold = self.threshold()
-        timelengeth = 128
-        spike_state_length = timelengeth * self.sample_number
+        # timelengeth = 128
+        # spike_state_length = timelengeth * self.sample_number
 
         b = []
 
         if self.sample_number > 0:
-            threshold = np.tile(np.transpose(variable_threshold), [7680, 1])
+            threshold = np.tile(np.transpose(variable_threshold), [len(self.data), 1])
 
             for i in range(0, len(self.data)):
                 b.append(np.subtract(self.data[i], self.data[i - 1]).tolist())
@@ -38,6 +36,7 @@ class TCE:
             return spike
 
     def threshold(self):
+
         x = np.array(self.data)
         data = np.diff(list(map(list, zip(*x))))
 
@@ -48,22 +47,22 @@ class TCE:
         v = 0.
         for a in range(0, len(data)):
 
-            for i in range(0, len(data[0]), 128):
-                v += np.mean(np.abs(data[a][i:i + 127])) + np.std(np.abs(data[a][i:i + 127])) * self.thresh
+            for i in range(0, len(data[0]), self.time_length):
+                v += np.mean(np.abs(data[a][i:i + self.time_length-1])) + np.std(np.abs(data[a][i:i + self.time_length-1])) * self.thresh
                 k.append(v)
 
             for l in range(0, len(data)):
                 if a == l:
                     v = 0.
 
-        for x in range(14):
-            z.append(k[:60])
-            del k[:60]
+        for x in range(self.feature_length):
+            z.append(k[:self.sample_number])
+            del k[:self.sample_number]
 
         for s in range(len(z)):
-            m.append(z[s][59])
+            m.append(z[s][self.sample_number-1])
 
-        return np.transpose(m) / 60
+        return np.transpose(m) / self.sample_number
 
 
 def main():
