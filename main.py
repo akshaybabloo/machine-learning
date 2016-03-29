@@ -1,4 +1,4 @@
-from Temporal_Contrast_Encoder.TCE import TCE
+from SNN.SpikeEncoding.TemporalContrastEncoder.TCE import TCE
 import os
 import argparse
 import sys
