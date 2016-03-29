@@ -105,3 +105,18 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Data Files
+cube_*.json
+*.sac
+*.eeg
+*.vhdr
+*.vmrk
+*.csv
+*.txt
+
+# Misc.
+*.ai
+
+# Exceptions
+!requirements.txt
