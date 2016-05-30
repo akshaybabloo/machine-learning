@@ -2,8 +2,9 @@ from SNN.SpikeEncoding.TemporalContrastEncoder.TCE import TCE
 import os
 import argparse
 import sys
+import timeit
 
-
+tic = timeit.default_timer()
 parser = argparse.ArgumentParser(prog='NeuCube',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='''\
@@ -32,3 +33,5 @@ else:
     var = TCE(data_location, config_location)
 
 print(var.encoder())
+toc = timeit.default_timer()
+print(toc-tic)
