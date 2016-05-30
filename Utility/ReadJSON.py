@@ -1,7 +1,6 @@
 import json
 import sys
 
-
 class JSONParser:
     def __init__(self, location=None):
         self.current_folder = location

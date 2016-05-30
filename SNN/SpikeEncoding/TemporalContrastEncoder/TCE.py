@@ -1,7 +1,6 @@
 import numpy as np
-from Utility.JSONParser import JSONParser
+from Utility.ReadJSON import JSONParser
 from Utility.ReadCSV import ReadCSV
-
 
 class TCE:
     def __init__(self, location=None, config=None):
@@ -37,6 +36,8 @@ class TCE:
                 ((b > threshold).astype(int) - (b < -threshold).astype(int), (b < -threshold).astype(int)), axis=1)
 
             return spike
+        else:
+            raise(Exception('Sample number is either less than or equal to 0.'))
 
     def threshold(self):
         """
